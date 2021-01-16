@@ -2,7 +2,7 @@
 
 namespace Generics
 {
-    class Program
+    class generic
     {
         public interface ICommunicate
         {
