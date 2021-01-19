@@ -2,65 +2,41 @@
 
 namespace Events
 {
-   public  class Program
+    public class Program
     {
-       public static void Main(string[] args)
-        { 
-          var dealer = new CarDealer();
-        
-        var michael = new Consumer("Michael");
-        // attach a listener to and event - use the += notation
-        dealer.NewCarEvent += michael.NewCarIsHere;
-        dealer.NewCar("Ferrari");
-        dealer.NewCarEvent -= michael.NewCarIsHere;
 
-        var nick = new Consumer("Sebastian");
-        dealer.NewCarEvent += nick.NewCarIsHere;
-        dealer.NewCar("Mercedes");
-        dealer.NewCarEvent -= nick.NewCarIsHere;
-        dealer.NewCar("Red Bull Racing");
-    }
-}
+       
+            static void Main(string[] args)
+            {
+                additinoftwo a = new additinoftwo();
+                //Event gets binded with delegates
+                a.evnumber += new additinoftwo.oddNumber(EventMessage);
+                a.Add();
+                Console.Read();
+            }
+            //Delegates calls this method when event raised.  
+            static void EventMessage()
+            {
+                Console.WriteLine("** This is Odd Number**");
+            }
+        }
 
-public class Consumer
-{
-    private string name;
-    public Consumer(string name)
-    {
-        this.name = name;
-    }
-
-    public void NewCarIsHere(object sender, CarInfoEventArgs e)
-    {
-        Console.WriteLine("{0}: car {1} is new", name, e.Car);
-    }
-}
-
-public class CarInfoEventArgs : EventArgs
-{
-    public CarInfoEventArgs(string car)
-    {
-        this.Car = car;
-    }
-
-    public string Car { get; private set; }
-}
-
-public delegate void CarEvent(object sender, CarInfoEventArgs e);
-
-public class CarDealer
-{
-    public event CarEvent NewCarEvent;
-    public void NewCar(string car)
-    {
-        Console.WriteLine("CarDealer got a new car {0}", car);
-        RaiseNewCarEvent(car);
-    }
-    protected virtual void RaiseNewCarEvent(string car)
-    {
-        if (NewCarEvent != null)
+        class additinoftwo
         {
-            NewCarEvent(this, new CarInfoEventArgs(car));
+            public delegate void oddNumber(); // Delegate   Declared  
+        public event oddNumber evnumber; // EventsDeclared
+
+        public void Add()
+            {
+                int result;
+                result = 1 + 2;
+                Console.WriteLine(result.ToString());
+              
+                if ((result % 2 != 0))
+                {
+                    evnumber(); //event raise
+                }
+            }
+
         }
     }
-}
